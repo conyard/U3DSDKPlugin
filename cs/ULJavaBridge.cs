@@ -57,8 +57,9 @@ public class ULJavaBridge : MonoBehaviour {
 		dicJo.Add(classListener,jo);
 #endif
 	}
+	
 	public static void Init( string classListener,LuaFunction onResult ) {
-		callBack2Lua = data => onResult.Call(data);
+		ResetLuaCallFunc(onResult);
 #if UNITY_ANDROID
 
 		InitBridge();
@@ -75,6 +76,13 @@ public class ULJavaBridge : MonoBehaviour {
 #endif
 	}
 	
+	public static void ResetLuaCallFunc( LuaFunction onResult ) {
+		if( onResult == null ){
+			callBack2Lua = null;
+			return;
+		}
+		callBack2Lua = data => onResult.Call(data);
+	}
 	
 	public static void SendToJava( string param ){
 #if UNITY_ANDROID
